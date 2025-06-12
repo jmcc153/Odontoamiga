@@ -1,13 +1,14 @@
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { AddCodeudor } from "../../services/simulator.service";
 import styles from "./formCodeudor.module.css";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { InfoSimulationContext } from "../../contexts/infoSimulationContext";
 import { useForm } from "react-hook-form";
 import { Form } from "../../components/form/form";
 import { Modal } from "../../components/modal/modal";
 import { FiAlertCircle } from "react-icons/fi";
 import stylesModal from "../../components/modal/modal.module.css";
+import { getCities } from "../../services/form.service";
 
 export const FormCodeudor = () => {
   const form = useForm();
@@ -15,8 +16,26 @@ export const FormCodeudor = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
+  const [cities, setCities] = useState([]);
 
   const idRequest = searchParams.get("idRequest");
+
+
+    useEffect(() => {
+      getCities()
+        .then((res) => {
+          const formattedCities = res
+            .map((city) => ({
+              label: city.name,
+              value: city.name,
+            }))
+            .sort((a, b) => a.label.localeCompare(b.label));
+          setCities(formattedCities);
+        })
+        .catch((err) => {
+          console.error("Error fetching cities:", err);
+        });
+    }, []);
 
   const onSubmit = (data) => {
 
@@ -24,12 +43,10 @@ export const FormCodeudor = () => {
     sessionStorage.setItem("cellphone", data.telefono);
 
     const dataCodebtor = {
-      validation_type: "OTP",
+      id_client: "5",
       person_data: {
         id_request: idRequest,
-        name: `${data.nombre} ${data.segundoNombre}`,
-        last_name: `${data.primerApellido} ${data.segundoApellido}`,
-        type_person: "N",
+        name: `${data.nombre} ${data.segundoNombre} ${data.primerApellido} ${data.segundoApellido}`,
         email: data.correo,
         document_type: data.tipoDocumento,
         document_number: data.numeroDocumento,
@@ -39,7 +56,6 @@ export const FormCodeudor = () => {
         address: data.direccion,
         city: data.ciudad,
         gender: data.barrio,
-        requested_amount: info?.amount,
       },
     };
     AddCodeudor(dataCodebtor)
@@ -132,8 +148,9 @@ export const FormCodeudor = () => {
     {
       name: "ciudad",
       label: "Ciudad *",
-      type: "text",
+      type: "select",
       required: true,
+      options: cities,
     },
     {
       name: "direccion",
