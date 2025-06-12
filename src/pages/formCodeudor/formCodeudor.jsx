@@ -9,9 +9,11 @@ import { Modal } from "../../components/modal/modal";
 import { FiAlertCircle } from "react-icons/fi";
 import stylesModal from "../../components/modal/modal.module.css";
 import { getCities } from "../../services/form.service";
+import { LoadingContext } from "../../contexts/loadingContext";
 
 export const FormCodeudor = () => {
   const form = useForm();
+  const { setIsLoading } = useContext(LoadingContext);
   const { info } = useContext(InfoSimulationContext);
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -56,6 +58,7 @@ export const FormCodeudor = () => {
         gender: data.barrio,
       },
     };
+    setIsLoading(true);
     AddCodeudor(dataCodebtor)
       .then((res) => {
         navigate(
@@ -73,6 +76,8 @@ export const FormCodeudor = () => {
             `/modal?idRequest=${idRequest}&idSignature=${err.response.data?.id_signature}&status=${err.response.data?.status}&isCodeudor=true`
           );
         }
+      }).finally(() => {
+        setIsLoading(false);
       });
   };
   const inputs = [

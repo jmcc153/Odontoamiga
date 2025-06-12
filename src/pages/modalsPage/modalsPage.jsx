@@ -11,10 +11,12 @@ import {
   validationFaceId,
   validationSignature,
 } from "../../services/form.service";
+import { LoadingContext } from "../../contexts/loadingContext";
 
 export const ModalsPage = () => {
   const [searchParams] = useSearchParams();
   const { info } = useContext(InfoSimulationContext);
+  const {setIsLoading} = useContext(LoadingContext);
 
   const idRequest = searchParams.get("idRequest");
   const status = searchParams.get("status");
@@ -29,6 +31,7 @@ export const ModalsPage = () => {
   const navigate = useNavigate();
 
   const handleSignatureProcess = () => {
+    setIsLoading(true);
     validationFaceId({
       document_number: documento || "",
       cellphone_number: cellphone || "",
@@ -44,10 +47,13 @@ export const ModalsPage = () => {
       })
       .catch((err) => {
         console.error("Error in validationFaceId:", err);
+      }).finally(() => {
+        setIsLoading(false);
       });
   };
 
   const handleAproveRemediable = () => {
+    setIsLoading(true);
     approveRemediable({
       id_request: idRequest,
       document_number: documento,
@@ -59,10 +65,13 @@ export const ModalsPage = () => {
       })
       .catch((err) => {
         console.error("Error in approveRemediable:", err);
+      }).finally(() => {
+        setIsLoading(false);
       });
   };
 
   const handleRejectRemediable = () => {
+    setIsLoading(true);
     rejectRemediable({
       id_request: idRequest,
     })
@@ -71,19 +80,24 @@ export const ModalsPage = () => {
       })
       .catch((err) => {
         console.error("Error in rejectRemediable:", err);
+      }).finally(() => {
+        setIsLoading(false);
       });
   };
 
   useEffect(() => {
     if (processId) {
+      setIsLoading(true);
       validationSignature(processId)
         .then((res) => {
           console.log("Signature validation response:", res);
-          setIsSignatureSuccess(true);
+          setIsSignatureSuccess("approve");
         })
         .catch((err) => {
           console.error("Error in validationSignature:", err);
-          setIsSignatureSuccess(false);
+          setIsSignatureSuccess("rejected");
+        }).finally(() => {
+          setIsLoading(false);
         });
     }
   }, [processId]);
@@ -270,7 +284,7 @@ export const ModalsPage = () => {
           )
           }
         </Modal>
-      ) : isSignatureSuccess ? (
+      ) : isSignatureSuccess == "approve" ? (
         <Modal
           icon={<FaRegCheckCircle />}
           title="Validación de firma"
@@ -291,7 +305,7 @@ export const ModalsPage = () => {
             </div>
           </>
         </Modal>
-      ) : (
+      ) : isSignatureSuccess == "rejected" ? (
         <Modal
           icon={<FiAlertCircle />}
           title="Validación de firma"
@@ -315,7 +329,22 @@ export const ModalsPage = () => {
             </div>
           </>
         </Modal>
-      )}
+      ) : isSignatureSuccess === null ? (
+        <Modal
+          icon={<FiAlertCircle />}
+          title="Validación de firma"
+          isSuccess="approved"
+        >
+          <>
+            <p>
+              <strong>Estamos validando tu firma...</strong>
+            </p>
+            <p>
+              Por favor, espera mientras completamos el proceso de validación.
+            </p>
+          </>
+        </Modal>
+      ) : null}
     </>
   );
 };

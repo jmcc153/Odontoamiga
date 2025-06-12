@@ -10,10 +10,12 @@ import { useNavigate } from "react-router-dom";
 import { Form } from "../../components/form/form";
 import { getCities } from "../../services/form.service";
 import { TiInfoOutline } from "react-icons/ti";
+import { LoadingContext } from "../../contexts/loadingContext";
 
 export const FormDeudor = () => {
   const form = useForm();
   const { info, setInfo } = useContext(InfoSimulationContext);
+  const {setIsLoading} = useContext(LoadingContext);
   const [isOpenModal, setIsOpenModal] = useState({
     noSignature: false,
     pendingSignature: false,
@@ -79,6 +81,7 @@ export const FormDeudor = () => {
       },
       simulation_info: info?.simulation_info,
     };
+    setIsLoading(true);
     AddprincipalDebtor(dataDebtor)
       .then((res) => {
         navigate(
@@ -107,6 +110,8 @@ export const FormDeudor = () => {
             `/modal?idRequest=${err.response.data?.id_request}&idSignature=${err.response.data?.id_signature}&status=${err.response.data?.status}&isCodeudor=false`
           );
         }
+      }).finally(() => {
+        setIsLoading(false);
       });
   };
   const inputs = [
