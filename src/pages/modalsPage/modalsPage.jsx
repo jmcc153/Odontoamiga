@@ -35,7 +35,7 @@ export const ModalsPage = () => {
       id_request: idRequest,
       id_client: "5",
       redirect_url:
-        "https://neptuno.valcredit.co/credixpress_odontoamiga/modal?validation=fid",
+        "https://odontoamiga.vercel.app/modal?validation=fid",
     })
       .then((res) => {
         if (res?.token_url) {
