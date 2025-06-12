@@ -39,8 +39,6 @@ export const FormCodeudor = () => {
 
   const onSubmit = (data) => {
 
-    sessionStorage.setItem("documento", data.numeroDocumento);
-    sessionStorage.setItem("cellphone", data.telefono);
 
     const dataCodebtor = {
       id_client: "5",
