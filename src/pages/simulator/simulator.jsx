@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import styles from "./simulator.module.css";
 import { useForm } from "react-hook-form";
 import { dateSimulator, functionToMoney, moneyToFunction } from "../../utils";
@@ -18,6 +18,7 @@ export const Simulator = () => {
   const [valueTable, setValueTable] = useState([]);
   const [isViewTable, setIsViewTable] = useState(false);
   const { setInfo } = useContext(InfoSimulationContext);
+  const location = useLocation();
   const navigate = useNavigate();
   const form = useForm();
   const {
@@ -246,8 +247,10 @@ export const Simulator = () => {
     },
   ];
 
+  const currentQuery = location.search;
+
   const handleRequestCredit = () => {
-    navigate("/formulario");
+    navigate(`/formulario/${currentQuery}`);
   };
 
   const handlePrint = () => {

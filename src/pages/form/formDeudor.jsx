@@ -6,7 +6,7 @@ import { InfoSimulationContext } from "../../contexts/infoSimulationContext";
 import { useForm } from "react-hook-form";
 import { AddprincipalDebtor } from "../../services/simulator.service";
 import { FaRegCheckCircle } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { Form } from "../../components/form/form";
 import { getCities } from "../../services/form.service";
 import { TiInfoOutline } from "react-icons/ti";
@@ -15,6 +15,7 @@ import { LoadingContext } from "../../contexts/loadingContext";
 export const FormDeudor = () => {
   const form = useForm();
   const { info, setInfo } = useContext(InfoSimulationContext);
+  const [searchParams] = useSearchParams();
   const {setIsLoading} = useContext(LoadingContext);
   const [isOpenModal, setIsOpenModal] = useState({
     noSignature: false,
@@ -22,6 +23,8 @@ export const FormDeudor = () => {
   });
   const [cities, setCities] = useState([]);
   const navigate = useNavigate();
+
+  const validation = searchParams.get("validation");
 
   useEffect(() => {
     getCities()
@@ -85,7 +88,7 @@ export const FormDeudor = () => {
     AddprincipalDebtor(dataDebtor)
       .then((res) => {
         navigate(
-          `/modal?idRequest=${res.id_request}&idSignature=${res.id_signature}&status=${res.status}&isCodeudor=false`
+          `/modal?idRequest=${res.id_request}&idSignature=${res.id_signature}&status=${res.status}&isCodeudor=false&validation=${validation}`
         );
       })
       .catch((err) => {
@@ -102,12 +105,12 @@ export const FormDeudor = () => {
             remedial_amount: err.response.data?.remedial_amount,
           })
           navigate(
-            `/modal?idRequest=${err.response.data?.id_request}&idSignature=${err.response.data?.id_signature}&status=${err.response.data?.status}&isCodeudor=false`
+            `/modal?idRequest=${err.response.data?.id_request}&idSignature=${err.response.data?.id_signature}&status=${err.response.data?.status}&isCodeudor=false&validation=${validation}`
           );
         }
         else {
           navigate(
-            `/modal?idRequest=${err.response.data?.id_request}&idSignature=${err.response.data?.id_signature}&status=${err.response.data?.status}&isCodeudor=false`
+            `/modal?idRequest=${err.response.data?.id_request}&idSignature=${err.response.data?.id_signature}&status=${err.response.data?.status}&isCodeudor=false&validation=${validation}`
           );
         }
       }).finally(() => {
@@ -257,7 +260,7 @@ export const FormDeudor = () => {
                   className={`${stylesModal.button} ${stylesModal.cancel}`}
                   onClick={() => {
                     //onSubmit(form.getValues());
-                    navigate("/infoNoSignature");
+                    navigate(`/infoNoSignature?validation=${validation}`);
                   }}
                 >
                   Continuar

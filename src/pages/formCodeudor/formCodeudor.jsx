@@ -21,7 +21,7 @@ export const FormCodeudor = () => {
   const [cities, setCities] = useState([]);
 
   const idRequest = searchParams.get("idRequest");
-
+  const validation = searchParams.get("validation");
 
     useEffect(() => {
       getCities()
@@ -62,7 +62,7 @@ export const FormCodeudor = () => {
     AddCodeudor(dataCodebtor)
       .then((res) => {
         navigate(
-          `/modal?idRequest=${idRequest}&idSignature=${res?.id_signature}&status=${res?.status}&isCodeudor=true`
+          `/modal?idRequest=${idRequest}&idSignature=${res?.id_signature}&status=${res?.status}&isCodeudor=true&validation=${validation}`
         );
       })
       .catch((err) => {
@@ -73,7 +73,7 @@ export const FormCodeudor = () => {
         }
         else{
           navigate(
-            `/modal?idRequest=${idRequest}&idSignature=${err.response.data?.id_signature}&status=${err.response.data?.status}&isCodeudor=true`
+            `/modal?idRequest=${idRequest}&idSignature=${err.response.data?.id_signature}&status=${err.response.data?.status}&isCodeudor=true&validation=${validation}`
           );
         }
       }).finally(() => {

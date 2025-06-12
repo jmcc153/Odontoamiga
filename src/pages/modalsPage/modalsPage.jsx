@@ -9,14 +9,16 @@ import {
   approveRemediable,
   rejectRemediable,
   validationFaceId,
+  validationOtp,
   validationSignature,
+  validationSignatureOTP,
 } from "../../services/form.service";
 import { LoadingContext } from "../../contexts/loadingContext";
 
 export const ModalsPage = () => {
   const [searchParams] = useSearchParams();
   const { info } = useContext(InfoSimulationContext);
-  const {setIsLoading} = useContext(LoadingContext);
+  const { setIsLoading } = useContext(LoadingContext);
 
   const idRequest = searchParams.get("idRequest");
   const status = searchParams.get("status");
@@ -26,29 +28,41 @@ export const ModalsPage = () => {
   const documento = sessionStorage.getItem("documento");
   const cellphone = sessionStorage.getItem("cellphone");
 
+  const validation = searchParams.get("validation");
+
   const [isSuccess, setIsSuccess] = useState(null);
   const [isSignatureSuccess, setIsSignatureSuccess] = useState(null);
   const navigate = useNavigate();
 
   const handleSignatureProcess = () => {
     setIsLoading(true);
-    validationFaceId({
-      document_number: documento || "",
-      cellphone_number: cellphone || "",
-      id_request: idRequest,
-      id_client: "5",
-      redirect_url:
-        "https://odontoamiga.vercel.app/modal?validation=fid",
-    })
-      .then((res) => {
-        if (res?.token_url) {
-          window.open(res.token_url, "_blank");
-        }
+    if (validation == "fid") {
+      validationFaceId({
+        document_number: documento || "",
+        cellphone_number: cellphone || "",
+        id_request: idRequest,
+        id_client: "5",
+        redirect_url: `https://odontoamiga.vercel.app/modal?validation=${validation}`,
       })
-      .catch((err) => {
-        console.error("Error in validationFaceId:", err);
-      }).finally(() => {
-        setIsLoading(false);
+        .then((res) => {
+          if (res?.token_url) {
+            window.open(res.token_url, "_blank");
+          }
+        })
+        .catch((err) => {
+          console.error("Error in validationFaceId:", err);
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
+    }
+    if (validation == "otp")
+      validationOtp({
+        document_number: documento || "",
+        cellphone_number: cellphone || "",
+        id_request: idRequest,
+        id_client: "5",
+        redirect_url: `https://odontoamiga.vercel.app/modal?validation=${validation}`,
       });
   };
 
@@ -60,12 +74,13 @@ export const ModalsPage = () => {
     })
       .then((res) => {
         navigate(
-          `/modal?idRequest=${idRequest}&idSignature=${res?.id_signature}&status=${res?.status}&isCodeudor=${isCodeudor}`
+          `/modal?idRequest=${idRequest}&idSignature=${res?.id_signature}&status=${res?.status}&isCodeudor=${isCodeudor}&validation=${validation}`
         );
       })
       .catch((err) => {
         console.error("Error in approveRemediable:", err);
-      }).finally(() => {
+      })
+      .finally(() => {
         setIsLoading(false);
       });
   };
@@ -76,17 +91,18 @@ export const ModalsPage = () => {
       id_request: idRequest,
     })
       .then((res) => {
-        navigate("/");
+        navigate(`/?validation=${validation}`);
       })
       .catch((err) => {
         console.error("Error in rejectRemediable:", err);
-      }).finally(() => {
+      })
+      .finally(() => {
         setIsLoading(false);
       });
   };
 
   useEffect(() => {
-    if (processId) {
+    if (processId && validation == "fid") {
       setIsLoading(true);
       validationSignature(processId)
         .then((res) => {
@@ -96,7 +112,23 @@ export const ModalsPage = () => {
         .catch((err) => {
           console.error("Error in validationSignature:", err);
           setIsSignatureSuccess("rejected");
-        }).finally(() => {
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
+    }
+    else if (processId && validation == "otp") {
+      setIsLoading(true);
+      validationSignatureOTP(processId)
+        .then((res) => {
+          console.log("OTP validation response:", res);
+          setIsSignatureSuccess("approve");
+        })
+        .catch((err) => {
+          console.error("Error in validationSignature:", err);
+          setIsSignatureSuccess("rejected");
+        })
+        .finally(() => {
           setIsLoading(false);
         });
     }
@@ -223,7 +255,9 @@ export const ModalsPage = () => {
                 <button
                   className={`${stylesModal.button} ${stylesModal.failure}`}
                   onClick={() =>
-                    navigate(`/formularioCodeudor?idRequest=${idRequest}`)
+                    navigate(
+                      `/formularioCodeudor?idRequest=${idRequest}&validation=${validation}`
+                    )
                   }
                 >
                   Agregar codeudor
@@ -253,7 +287,9 @@ export const ModalsPage = () => {
                 <button
                   className={`${stylesModal.button} ${stylesModal.success}`}
                   onClick={() =>
-                    navigate(`/formularioCodeudor/?idRequest=${idRequest}`)
+                    navigate(
+                      `/formularioCodeudor/?idRequest=${idRequest}&validation=${validation}`
+                    )
                   }
                 >
                   Ingresar nuevo codeudor
@@ -261,8 +297,7 @@ export const ModalsPage = () => {
               </div>
             </>
           )}
-          {
-            isSuccess == "max_joint_debtors" && (
+          {isSuccess == "max_joint_debtors" && (
             <>
               <p>
                 <strong>
@@ -273,16 +308,13 @@ export const ModalsPage = () => {
               <div className={stylesModal.modalFooter}>
                 <button
                   className={`${stylesModal.button} ${stylesModal.success}`}
-                  onClick={() =>
-                    navigate(`/`)
-                  }
+                  onClick={() => navigate(`/`)}
                 >
                   Finalizar
                 </button>
               </div>
             </>
-          )
-          }
+          )}
         </Modal>
       ) : isSignatureSuccess == "approve" ? (
         <Modal
