@@ -104,7 +104,7 @@ export const ModalsPage = () => {
           }
           isSuccess={isSuccess}
         >
-          {isSuccess == "approved" && isCodeudor == "false" && (
+          {isSuccess == "approved" && (
             <>
               <p>
                 <strong>¡Estás a un paso de obtener tu crédito!</strong>
