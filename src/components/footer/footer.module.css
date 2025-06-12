@@ -1,0 +1,118 @@
+.container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  justify-items: center;
+  gap: 1rem;
+  width: 100%;
+  background-color: white;
+  padding: 2rem 1rem;
+  box-sizing: border-box;
+
+  @media (max-width: 800px) {
+    display: flex;
+    flex-direction: column;
+    
+  }
+
+  .containerLogo {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    p{
+      text-align: start;
+    }
+    @media (max-width: 800px) {
+      text-align: start;
+    }
+    img {
+
+      width: 40%;
+      object-fit: contain;
+      @media (max-width: 800px) {
+        width: 20%;
+      }
+    }
+  }
+
+  .containerText {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    align-items: start;
+
+    .text {
+      display: flex;
+      flex-direction: column;
+      justify-content: start;
+      align-items: start;
+      width: 100%;
+
+      a {
+        font-size: 0.8rem;
+        color: var(--gray);
+        font-weight: 400;
+        margin-bottom: 0.5em;
+        white-space: nowrap;
+        text-decoration: none;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+
+      p {
+        text-align: start;
+      }
+    }
+
+    .title {
+      color: var(--gray);
+    }
+
+    p {
+      font-size: 0.8rem;
+      color: var(--gray);
+      font-weight: 400;
+      margin-bottom: 0.5em;
+      white-space: nowrap;
+    }
+    h4 {
+      font-size: 0.8rem;
+      color: var(--gray);
+    }
+  }
+  .containerVersion{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    width: 100%;
+    text-align: center;
+    grid-column: span 4;
+  }
+  .containerTerms{
+    grid-column: span 3;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    .terms{
+      border-top: 1px solid var(--gray);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 1rem 0;
+      margin: auto;
+    }
+    p{
+      font-size: 0.8rem;
+      color: var(--gray);
+      font-weight: 400;
+      text-align: center;
+    }
+    h4{
+      text-align: start;
+    }
+  }
+}

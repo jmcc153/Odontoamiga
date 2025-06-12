@@ -1,0 +1,28 @@
+.backgroundImage {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto minmax(80vh, 1fr) auto;
+  justify-items: center;
+  gap: 2rem;
+  align-items: baseline;
+  background-image: url("../assets/images/Fondo.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 100%;
+  height: max-content;
+  box-sizing: border-box;
+
+  .containerImg {
+    position: relative;
+    background-color: white;
+    width: 100%;
+    padding: 2rem 0 0 2rem;
+    text-align: start;
+    box-sizing: border-box;
+    .logoImg {
+      object-fit: cover;
+      width: 15rem;
+    }
+  }
+}
