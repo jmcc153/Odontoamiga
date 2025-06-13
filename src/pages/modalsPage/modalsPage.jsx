@@ -63,7 +63,18 @@ export const ModalsPage = () => {
         id_request: idRequest,
         id_client: "5",
         redirect_url: `https://odontoamiga.vercel.app/modal?validation=${validation}`,
-      });
+      }).
+        then((res) => {
+          if (res?.token_url) {
+            window.open(res.token_url, "_blank");
+          }
+        })
+        .catch((err) => {
+          console.error("Error in validationOtp:", err);
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
   };
 
   const handleAproveRemediable = () => {
