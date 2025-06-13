@@ -13,7 +13,7 @@ export const getCities = async () => {
 //Esto devuelve una url de truora
 export const validationOtp = async (data) => {
   try {
-    const response = await axiosInstanceBearerCity.post("/signature/start_validation/otp", data);
+    const response = await axiosInstanceBearer2.post("/signature/start_validation/otp", data);
     return response.data;
   } catch (error) {
     console.error("Error validating OTP:", error);
