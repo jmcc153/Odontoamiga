@@ -46,7 +46,8 @@ export const ModalsPage = () => {
       })
         .then((res) => {
           if (res?.token_url) {
-            window.open(res.token_url, "_blank");
+            //replace the current URL with the token_url
+            window.location.replace(res.token_url);
           }
         })
         .catch((err) => {
@@ -66,7 +67,8 @@ export const ModalsPage = () => {
       }).
         then((res) => {
           if (res?.token_url) {
-            window.open(res.token_url, "_blank");
+            //replace the current URL with the token_url
+            window.location.replace(res.token_url);
           }
         })
         .catch((err) => {
