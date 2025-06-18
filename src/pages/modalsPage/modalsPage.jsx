@@ -32,6 +32,7 @@ export const ModalsPage = () => {
 
   const [isSuccess, setIsSuccess] = useState(null);
   const [isSignatureSuccess, setIsSignatureSuccess] = useState(null);
+  const [redirect_url, setRedirectUrl] = useState(null);
   const navigate = useNavigate();
 
   const handleSignatureProcess = () => {
@@ -64,8 +65,8 @@ export const ModalsPage = () => {
         id_request: idRequest,
         id_client: "5",
         redirect_url: `https://odontoamiga.vercel.app/modal?validation=${validation}`,
-      }).
-        then((res) => {
+      })
+        .then((res) => {
           if (res?.token_url) {
             //replace the current URL with the token_url
             window.location.replace(res.token_url);
@@ -123,14 +124,15 @@ export const ModalsPage = () => {
           setIsSignatureSuccess("approve");
         })
         .catch((err) => {
+          setIsSuccess(err?.response.data.status || "rejected");
+          setRedirectUrl(err?.response.data.redirect_url);
           console.error("Error in validationSignature:", err);
-          setIsSignatureSuccess("rejected");
+          setIsSignatureSuccess(false);
         })
         .finally(() => {
           setIsLoading(false);
         });
-    }
-    else if (processId && validation == "otp") {
+    } else if (processId && validation == "otp") {
       setIsLoading(true);
       validationSignatureOTP(processId)
         .then((res) => {
@@ -138,8 +140,10 @@ export const ModalsPage = () => {
           setIsSignatureSuccess("approve");
         })
         .catch((err) => {
+          setIsSuccess(err?.response.data.status || "rejected");
+          setRedirectUrl(err?.response.data.redirect_url);
           console.error("Error in validationSignature:", err);
-          setIsSignatureSuccess("rejected");
+          setIsSignatureSuccess(false);
         })
         .finally(() => {
           setIsLoading(false);
@@ -370,6 +374,32 @@ export const ModalsPage = () => {
                 onClick={() => navigate("/")}
               >
                 Finalizar
+              </button>
+            </div>
+          </>
+        </Modal>
+      ) : isSignatureSuccess == "restart_validation" ? (
+        <Modal
+          icon={<FiAlertCircle />}
+          title="Reintentar firma"
+          isSuccess="rejected"
+        >
+          <>
+            <p>
+              <strong>¡Error al validar la firma!</strong>
+            </p>
+            <p>
+              El proceso de firma no se completó correctamente. Por favor,
+              intenta nuevamente.
+            </p>
+            <div className={stylesModal.modalFooter}>
+              <button
+                className={`${stylesModal.button} ${stylesModal.success}`}
+                onClick={() => {
+                  window.location.replace(redirect_url || "/");
+                }}
+              >
+                Reintentar
               </button>
             </div>
           </>
