@@ -404,7 +404,31 @@ export const ModalsPage = () => {
             </div>
           </>
         </Modal>
-      ) : isSignatureSuccess === null ? (
+      ) : isSignatureSuccess == "max_attemps" ? (
+        <Modal
+          icon={<FiAlertCircle />}
+          title="Límite de intentos alcanzado"
+          isSuccess="rejected"
+        >
+          <>
+            <p>
+              <strong>¡Has alcanzado el límite de intentos!</strong>
+            </p>
+            <p>
+              No se pudo completar el proceso de firma. Por favor, intenta
+              nuevamente más tarde o contacta al soporte.
+            </p>
+            <div className={stylesModal.modalFooter}>
+              <button
+                className={`${stylesModal.button} ${stylesModal.success}`}
+                onClick={() => navigate("/")}
+              >
+                Finalizar
+              </button>
+            </div>
+          </>
+        </Modal>
+      ) : isSignatureSuccess == null ? (
         <Modal
           icon={<FiAlertCircle />}
           title="Validación de firma"
