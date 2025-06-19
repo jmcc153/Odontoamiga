@@ -12,9 +12,9 @@ import { FormCodeudor } from './pages/formCodeudor/formCodeudor';
 import { InfoNoSignature } from './pages/infoNoSignature/infoNoSignature';
 
 function App() {
-  const { info } = useContext(InfoSimulationContext);
+/*   const { info } = useContext(InfoSimulationContext);
   const navigate = useNavigate();
-/*   useEffect(() => {
+  useEffect(() => {
     if (info == null){
       navigate(ROUTES.HOME);
     }

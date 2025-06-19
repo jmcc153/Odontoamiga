@@ -67,6 +67,7 @@ export const FormDeudor = () => {
 
     const dataDebtor = {
       id_client: "5",
+      method: validation,
       person_data: {
         name: `${data.nombre?.toLowerCase()} ${data.segundoNombre?.toLowerCase()}`,
         last_name: `${data.primerApellido?.toLowerCase()} ${data.segundoApellido?.toLowerCase()}`,

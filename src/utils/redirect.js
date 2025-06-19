@@ -11,7 +11,7 @@ export const RedirectOnLoad = () => {
 
     // Si NO hay validation, redirige a la misma ruta pero con ?validation=otp
     if (!validation) {
-      searchParams.set('validation', 'otp');
+      searchParams.set('validation', 'OTP');
       navigate(`${location.pathname}?${searchParams.toString()}`, { replace: true });
     }
   }, [location, navigate]);
