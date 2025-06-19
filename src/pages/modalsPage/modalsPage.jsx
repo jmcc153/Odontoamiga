@@ -37,7 +37,7 @@ export const ModalsPage = () => {
 
   const handleSignatureProcess = () => {
     setIsLoading(true);
-    if (validation == "fid") {
+    if (validation == "FID") {
       validationFaceId({
         document_number: documento || "",
         cellphone_number: cellphone || "",
@@ -58,7 +58,7 @@ export const ModalsPage = () => {
           setIsLoading(false);
         });
     }
-    if (validation == "otp")
+    if (validation == "OTP")
       validationOtp({
         document_number: documento || "",
         cellphone_number: cellphone || "",
@@ -116,7 +116,7 @@ export const ModalsPage = () => {
   };
 
   useEffect(() => {
-    if (processId && validation == "fid") {
+    if (processId && validation == "FID") {
       setIsLoading(true);
       validationSignature(processId)
         .then((res) => {
@@ -132,7 +132,7 @@ export const ModalsPage = () => {
         .finally(() => {
           setIsLoading(false);
         });
-    } else if (processId && validation == "otp") {
+    } else if (processId && validation == "OTP") {
       setIsLoading(true);
       validationSignatureOTP(processId)
         .then((res) => {
