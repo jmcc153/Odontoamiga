@@ -124,10 +124,9 @@ export const ModalsPage = () => {
           setIsSignatureSuccess("approve");
         })
         .catch((err) => {
-          setIsSuccess(err?.response.data.status || "rejected");
+          setIsSignatureSuccess(err?.response.data.status || "rejected");
           setRedirectUrl(err?.response.data.redirect_url);
           console.error("Error in validationSignature:", err);
-          setIsSignatureSuccess(false);
         })
         .finally(() => {
           setIsLoading(false);
@@ -140,10 +139,9 @@ export const ModalsPage = () => {
           setIsSignatureSuccess("approve");
         })
         .catch((err) => {
-          setIsSuccess(err?.response.data.status || "rejected");
+          console.log
+          setIsSignatureSuccess(err?.response.data.status || "rejected");
           setRedirectUrl(err?.response.data.redirect_url);
-          console.error("Error in validationSignature:", err);
-          setIsSignatureSuccess(false);
         })
         .finally(() => {
           setIsLoading(false);
