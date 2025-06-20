@@ -65,18 +65,18 @@ export const FormDeudor = () => {
     }
 
     //formatting the data
-    data.nombre = data.nombre.toLowerCase();
+    data.nombre = data.nombre.toLowerCase().trim();
     data.nombre = data.nombre[0].toUpperCase() + data.nombre.slice(1);
     data.segundoNombre = data.segundoNombre
-      ? data.segundoNombre.toLowerCase()
+      ? data.segundoNombre.toLowerCase().trim()
       : "";
     data.segundoNombre =
       data.segundoNombre[0].toUpperCase() + data.segundoNombre.slice(1);
-    data.primerApellido = data.primerApellido.toLowerCase();
+    data.primerApellido = data.primerApellido.toLowerCase().trim();
     data.primerApellido =
       data.primerApellido[0].toUpperCase() + data.primerApellido.slice(1);
     data.segundoApellido = data.segundoApellido
-      ? data.segundoApellido.toLowerCase()
+      ? data.segundoApellido.toLowerCase().trim()
       : "";
     data.segundoApellido =
       data.segundoApellido[0].toUpperCase() + data.segundoApellido.slice(1);
@@ -91,7 +91,7 @@ export const FormDeudor = () => {
         name: `${data.nombre} ${data.segundoNombre} ${data.primerApellido} ${data.segundoApellido}`,
         /* last_name: `${data.primerApellido} ${data.segundoApellido}`, */
         type_person: "N",
-        email: data.correo?.toLowerCase(),
+        email: data.correo?.toLowerCase().trim(),
         document_type: data.tipoDocumento,
         document_number: data.numeroDocumento,
         cellular: data.telefono,

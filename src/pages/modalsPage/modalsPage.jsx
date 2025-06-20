@@ -237,14 +237,7 @@ export const ModalsPage = () => {
               </p>
               <p>
                 <strong>
-                  Aunque no fue posible aprobar el valor total solicitado,
-                  podemos ofrecerte un crédito por {info?.amount}
-                </strong>
-              </p>
-              <p>
-                <strong>
-                  Si deseas continuar con este nuevo valor, estamos listos para
-                  seguir el proceso
+                  Puedes generar una nueva simulación con un monto diferente
                 </strong>
               </p>
               <p>

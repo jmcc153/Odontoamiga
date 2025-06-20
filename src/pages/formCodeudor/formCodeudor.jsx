@@ -40,16 +40,22 @@ export const FormCodeudor = () => {
   }, []);
 
   const onSubmit = (data) => {
+    data.nombre = data.nombre.toLowerCase().trim();
     data.nombre = data.nombre[0].toUpperCase() + data.nombre.slice(1);
     data.segundoNombre = data.segundoNombre
-      ? data.segundoNombre[0].toUpperCase() + data.segundoNombre.slice(1)
+      ? data.segundoNombre.toLowerCase().trim()
       : "";
+    data.segundoNombre =
+      data.segundoNombre[0].toUpperCase() + data.segundoNombre.slice(1);
+    data.primerApellido = data.primerApellido.toLowerCase().trim();
     data.primerApellido =
       data.primerApellido[0].toUpperCase() + data.primerApellido.slice(1);
     data.segundoApellido = data.segundoApellido
-      ? data.segundoApellido[0].toUpperCase() + data.segundoApellido.slice(1)
+      ? data.segundoApellido.toLowerCase().trim()
       : "";
-    data.correo = data.correo.toLowerCase();
+    data.segundoApellido =
+      data.segundoApellido[0].toUpperCase() + data.segundoApellido.slice(1);
+    data.correo = data.correo.toLowerCase().trim();
 
     const dataCodebtor = {
       id_client: "5",
