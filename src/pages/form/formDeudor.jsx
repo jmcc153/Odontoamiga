@@ -88,8 +88,8 @@ export const FormDeudor = () => {
       id_client: "5",
       method: validation,
       person_data: {
-        name: `${data.nombre} ${data.segundoNombre}`,
-        last_name: `${data.primerApellido} ${data.segundoApellido}`,
+        name: `${data.nombre} ${data.segundoNombre} ${data.primerApellido} ${data.segundoApellido}`,
+        /* last_name: `${data.primerApellido} ${data.segundoApellido}`, */
         type_person: "N",
         email: data.correo?.toLowerCase(),
         document_type: data.tipoDocumento,
