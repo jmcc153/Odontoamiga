@@ -16,7 +16,7 @@ export const FormDeudor = () => {
   const form = useForm();
   const { info, setInfo } = useContext(InfoSimulationContext);
   const [searchParams] = useSearchParams();
-  const {setIsLoading} = useContext(LoadingContext);
+  const { setIsLoading } = useContext(LoadingContext);
   const [isOpenModal, setIsOpenModal] = useState({
     noSignature: false,
     pendingSignature: false,
@@ -60,7 +60,20 @@ export const FormDeudor = () => {
         type: "manual",
         message: "Debes ser mayor de edad para continuar",
       });
+      return;
     }
+
+    //formatting the data
+    data.nombre = data.nombre[0].toUpperCase() + data.nombre.slice(1);
+    data.segundoNombre = data.segundoNombre
+      ? data.segundoNombre[0].toUpperCase() + data.segundoNombre.slice(1)
+      : "";
+    data.primerApellido =
+      data.primerApellido[0].toUpperCase() + data.primerApellido.slice(1);
+    data.segundoApellido = data.segundoApellido
+      ? data.segundoApellido[0].toUpperCase() + data.segundoApellido.slice(1)
+      : "";
+    data.correo = data.correo.toLowerCase();
 
     sessionStorage.setItem("documento", data.numeroDocumento);
     sessionStorage.setItem("cellphone", data.telefono);
@@ -99,22 +112,21 @@ export const FormDeudor = () => {
             noSignature: false,
             pendingSignature: true,
           });
-        }
-        else if (err.response?.data?.status == "remediable") {
+        } else if (err.response?.data?.status == "remediable") {
           setInfo({
             ...info,
             remedial_amount: err.response.data?.remedial_amount,
-          })
+          });
+          navigate(
+            `/modal?idRequest=${err.response.data?.id_request}&idSignature=${err.response.data?.id_signature}&status=${err.response.data?.status}&isCodeudor=false&validation=${validation}`
+          );
+        } else {
           navigate(
             `/modal?idRequest=${err.response.data?.id_request}&idSignature=${err.response.data?.id_signature}&status=${err.response.data?.status}&isCodeudor=false&validation=${validation}`
           );
         }
-        else {
-          navigate(
-            `/modal?idRequest=${err.response.data?.id_request}&idSignature=${err.response.data?.id_signature}&status=${err.response.data?.status}&isCodeudor=false&validation=${validation}`
-          );
-        }
-      }).finally(() => {
+      })
+      .finally(() => {
         setIsLoading(false);
       });
   };
@@ -129,7 +141,7 @@ export const FormDeudor = () => {
       name: "segundoNombre",
       label: "Segundo Nombre",
       type: "text",
-      required: true,
+      required: false,
     },
     {
       name: "primerApellido",

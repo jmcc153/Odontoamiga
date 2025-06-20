@@ -23,24 +23,33 @@ export const FormCodeudor = () => {
   const idRequest = searchParams.get("idRequest");
   const validation = searchParams.get("validation");
 
-    useEffect(() => {
-      getCities()
-        .then((res) => {
-          const formattedCities = res
-            .map((city) => ({
-              label: city.name,
-              value: city.name,
-            }))
-            .sort((a, b) => a.label.localeCompare(b.label));
-          setCities(formattedCities);
-        })
-        .catch((err) => {
-          console.error("Error fetching cities:", err);
-        });
-    }, []);
+  useEffect(() => {
+    getCities()
+      .then((res) => {
+        const formattedCities = res
+          .map((city) => ({
+            label: city.name,
+            value: city.name,
+          }))
+          .sort((a, b) => a.label.localeCompare(b.label));
+        setCities(formattedCities);
+      })
+      .catch((err) => {
+        console.error("Error fetching cities:", err);
+      });
+  }, []);
 
   const onSubmit = (data) => {
-
+    data.nombre = data.nombre[0].toUpperCase() + data.nombre.slice(1);
+    data.segundoNombre = data.segundoNombre
+      ? data.segundoNombre[0].toUpperCase() + data.segundoNombre.slice(1)
+      : "";
+    data.primerApellido =
+      data.primerApellido[0].toUpperCase() + data.primerApellido.slice(1);
+    data.segundoApellido = data.segundoApellido
+      ? data.segundoApellido[0].toUpperCase() + data.segundoApellido.slice(1)
+      : "";
+    data.correo = data.correo.toLowerCase();
 
     const dataCodebtor = {
       id_client: "5",
@@ -70,13 +79,13 @@ export const FormCodeudor = () => {
         if (err.response?.data?.status === "max_joint_debtors") {
           setIsOpen(true);
           return;
-        }
-        else{
+        } else {
           navigate(
             `/modal?idRequest=${idRequest}&idSignature=${err.response.data?.id_signature}&status=${err.response.data?.status}&isCodeudor=true&validation=${validation}`
           );
         }
-      }).finally(() => {
+      })
+      .finally(() => {
         setIsLoading(false);
       });
   };

@@ -25,6 +25,7 @@ Transversal*/
       name: "tipoVia",
       type: "select",
       options: [
+        { label: "Seleccione", value: "" },
         { label: "Autopista", value: "Autopista" },
         { label: "Avenida", value: "Avenida" },
         { label: "Avenida calle", value: "Avenida calle" },
@@ -48,6 +49,7 @@ Transversal*/
       name: "letraVia",
       type: "select",
       options: [
+        { label: "Seleccione", value: "" },
         { label: "A", value: "A" },
         { label: "B", value: "B" },
         { label: "C", value: "C" },
@@ -81,6 +83,7 @@ Transversal*/
       name: "cuadrante",
       type: "select",
       options: [
+        { label: "Seleccione", value: "" },
         { label: "Bis", value: "Bis" },
         { label: "Este", value: "Este" },
         { label: "Norte", value: "Norte" },
@@ -99,6 +102,7 @@ Transversal*/
       name: "letra",
       type: "select",
       options: [
+        { label: "Seleccione", value: "" },
         { label: "A", value: "A" },
         { label: "B", value: "B" },
         { label: "C", value: "C" },
@@ -132,6 +136,7 @@ Transversal*/
       name: "cuadrante2",
       type: "select",
       options: [
+        { label: "Seleccione", value: "" },
         { label: "Bis", value: "Bis" },
         { label: "Este", value: "Este" },
         { label: "Norte", value: "Norte" },
