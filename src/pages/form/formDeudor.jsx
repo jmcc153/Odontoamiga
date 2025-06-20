@@ -54,6 +54,7 @@ export const FormDeudor = () => {
   };
 
   const onSubmit = (data) => {
+    debugger;
     const getBirthYear = new Date(data.fechaNacimiento).getFullYear();
     if (new Date().getFullYear() - getBirthYear < 18) {
       form.setError("fechaNacimiento", {
@@ -64,16 +65,21 @@ export const FormDeudor = () => {
     }
 
     //formatting the data
+    data.nombre = data.nombre.toLowerCase();
     data.nombre = data.nombre[0].toUpperCase() + data.nombre.slice(1);
     data.segundoNombre = data.segundoNombre
-      ? data.segundoNombre[0].toUpperCase() + data.segundoNombre.slice(1)
+      ? data.segundoNombre.toLowerCase()
       : "";
+    data.segundoNombre =
+      data.segundoNombre[0].toUpperCase() + data.segundoNombre.slice(1);
+    data.primerApellido = data.primerApellido.toLowerCase();
     data.primerApellido =
       data.primerApellido[0].toUpperCase() + data.primerApellido.slice(1);
     data.segundoApellido = data.segundoApellido
-      ? data.segundoApellido[0].toUpperCase() + data.segundoApellido.slice(1)
+      ? data.segundoApellido.toLowerCase()
       : "";
-    data.correo = data.correo.toLowerCase();
+    data.segundoApellido =
+      data.segundoApellido[0].toUpperCase() + data.segundoApellido.slice(1);
 
     sessionStorage.setItem("documento", data.numeroDocumento);
     sessionStorage.setItem("cellphone", data.telefono);
@@ -82,8 +88,8 @@ export const FormDeudor = () => {
       id_client: "5",
       method: validation,
       person_data: {
-        name: `${data.nombre?.toLowerCase()} ${data.segundoNombre?.toLowerCase()}`,
-        last_name: `${data.primerApellido?.toLowerCase()} ${data.segundoApellido?.toLowerCase()}`,
+        name: `${data.nombre} ${data.segundoNombre}`,
+        last_name: `${data.primerApellido} ${data.segundoApellido}`,
         type_person: "N",
         email: data.correo?.toLowerCase(),
         document_type: data.tipoDocumento,
@@ -92,7 +98,7 @@ export const FormDeudor = () => {
         birthdate: data.fechaNacimiento,
         expedition_date: data.fechaExpedicion,
         address: data.direccion,
-        city: data.ciudad?.toLowerCase(),
+        city: data.ciudad,
         gender: data.genero,
         requested_amount: info?.amount,
       },
